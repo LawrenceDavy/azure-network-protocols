@@ -49,16 +49,33 @@ In this tutorial, we observe various network traffic to and from Azure Virtual M
 <hr>
 <br>
 
-<h2>Create an “ACCOUNTANTS” Security Group, assign permissions, an test access</h2>
+<h2>3. Create an “ACCOUNTANTS” Security Group, assign permissions, an test access</h2>
 
 ![image](https://github.com/LawrenceDavy/configure-ad/assets/24421979/4126120c-9fa0-4edf-bb25-76a8f7a1214f)
 - Go back to DC-1, in Active Directory, create a security group called “ACCOUNTANTS”
+
+<hr>
+<br>
+
 ![image](https://github.com/LawrenceDavy/configure-ad/assets/24421979/3715f4d5-2c48-4479-b2c6-3d73fbbd7cb2)
 - On the “accounting” folder you created earlier, set the following permissions:
 - Folder: “accounting”, Group: “ACCOUNTANTS”, Permissions: “Read/Write”
 
+<hr>
+<br>
+
 ![image](https://github.com/LawrenceDavy/configure-ad/assets/24421979/4bbd21ac-c34a-49c6-a61e-12c856937fd7)
+- On Client-1, as  <someuser>, try to access the accountants folder. It should fail.
+
+<hr>
+<br>
 
 ![image](https://github.com/LawrenceDavy/configure-ad/assets/24421979/40a1b6ce-a5e4-4b02-8a78-8bc5a75ee763)
+- Log out of Client-1 as  <someuser>
+- On DC-1, make <someuser> a member of the “ACCOUNTANTS”  Security Group
+
+<hr>
+<br>
 
 ![image](https://github.com/LawrenceDavy/configure-ad/assets/24421979/c932972e-ce38-4d9d-a0f8-765ca033819e)
+- Sign back into Client-1 as <someuser> and try to access the “accounting” share in \\DC-1\
