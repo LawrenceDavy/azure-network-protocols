@@ -1,26 +1,28 @@
-<p align="center">
-<img src="https://i.imgur.com/Ua7udoS.png" alt="Traffic Examination"/>
-</p>
+# Azure File-Share Permissions and Access Control Lab
 
-<h1>Network Security Groups (NSGs) and Inspecting Traffic Between Azure Virtual Machines</h1>
-In this tutorial, we observe various network traffic to and from Azure Virtual Machines with Wireshark as well as experiment with Network Security Groups. <br />
+This is a Windows/Active Directory file-share permissions exercise using virtual machines in Azure. I created shares, tested access with different accounts and groups, then changed group membership to confirm the effective permissions.
+
+**Note:** The repository name is from an earlier set of networking exercises. The steps documented below cover **SMB file-share access control**, not Wireshark packet analysis or a full review of Azure Network Security Group traffic.
+
+## Environment
+
+- Azure virtual machines and Remote Desktop
+- Windows client and Active Directory domain controller
+- SMB shares, domain users and security groups
+
+## What I tested
+
+- Reading a shared folder using a standard domain account
+- Access being denied when a user lacked the required group membership
+- Granting access by adding the user to the appropriate group
+- Comparing share permissions and group membership results
+
+The screenshots and original lab procedure are retained below as evidence of the exercise.
+
+---
 
 
-<h2>Environments and Technologies Used</h2>
 
-- Microsoft Azure (Virtual Machines/Compute)
-- Remote Desktop
-- Various Command-Line Tools
-- Various Network Protocols (SSH, RDH, DNS, HTTP/S, ICMP)
-- Wireshark (Protocol Analyzer)
-
-<h2>Operating Systems Used </h2>
-
-- Windows 10 (21H2)
-- Ubuntu Server 20.04
-
-<hr>
-<br>
 
 <h2>1. Create some sample file shares with various permissions</h2>
 
@@ -37,7 +39,7 @@ In this tutorial, we observe various network traffic to and from Azure Virtual M
   - Folder: “no-access”, Group: “Domain Admins”, “Permissions: “Read/Write”
 
 <hr>
-<br>
+
 
 <h2>2. Attempt to access file shares as a normal user</h2>
 
@@ -47,7 +49,7 @@ In this tutorial, we observe various network traffic to and from Azure Virtual M
 - Try to access the folders you just created. You realise that you can access "read-access" and "write-access" folders but denied access to "no-access" folder due to lack of privileges as a  normal user
 
 <hr>
-<br>
+
 
 <h2>3. Create an “ACCOUNTANTS” Security Group, assign permissions, an test access</h2>
 
@@ -55,27 +57,27 @@ In this tutorial, we observe various network traffic to and from Azure Virtual M
 - Go back to DC-1, in Active Directory, create a security group called “ACCOUNTANTS”
 
 <hr>
-<br>
+
 
 ![image](https://github.com/LawrenceDavy/configure-ad/assets/24421979/3715f4d5-2c48-4479-b2c6-3d73fbbd7cb2)
 - On the “accounting” folder you created earlier, set the following permissions:
 - Folder: “accounting”, Group: “ACCOUNTANTS”, Permissions: “Read/Write”
 
 <hr>
-<br>
+
 
 ![image](https://github.com/LawrenceDavy/configure-ad/assets/24421979/4bbd21ac-c34a-49c6-a61e-12c856937fd7)
 - On Client-1, as  <someuser>, try to access the accountants folder. It should fail.
 
 <hr>
-<br>
+
 
 ![image](https://github.com/LawrenceDavy/configure-ad/assets/24421979/40a1b6ce-a5e4-4b02-8a78-8bc5a75ee763)
 - Log out of Client-1 as  <someuser>
 - On DC-1, make <someuser> a member of the “ACCOUNTANTS”  Security Group
 
 <hr>
-<br>
+
 
 ![image](https://github.com/LawrenceDavy/configure-ad/assets/24421979/c932972e-ce38-4d9d-a0f8-765ca033819e)
 - Sign back into Client-1 as <someuser> and try to access the “accounting” share in \\DC-1\
